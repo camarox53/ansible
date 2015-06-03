@@ -1,0 +1,47 @@
+#! /usr/bin/env bash
+
+# Changing Directory to the Users home Directory 
+cd /home/${USER}
+
+# Wget'ing the loud-desktop iso 
+wget http://loud.lcsee.wvu.edu/installer-images/loud-desktop.iso
+
+# Asking the tech if they would like to keep or remove their loud check 
+zenity --question --title "Loud Check" --text="Would you like to remove your current Loud Check and start a new one? Answering no will result in your previous Loud Check opening." 
+
+# Looking at the result of Users Choice
+if [[ $? == [0] ]]
+then
+    echo Removing ${USER} Virtual Machine
+
+# Removing Virtual Machine
+VBoxManage unregistervm "${USER}" --delete
+
+# Creating the Virtual Machine
+VBoxManage createvm --name "${USER}" --ostype Debian_64 --register
+
+# Setting network adapter and modifing the ram and video memory
+VBoxManage modifyvm "${USER}" --nic1 nat --memory 2048 --vram 100 --usb on
+
+# Creating a Sata controller
+VBoxManage storagectl "${USER}" --name "sata1" --add sata
+
+# Creating a 30 GB Hard drive
+VBoxManage createhd --filename ${USER}.vdi --size 30000
+
+# Attaching VDI to Sata controller
+VBoxManage storageattach "${USER}" --storagectl "sata1" --port 0 --device 0 --type hdd --medium ${USER}.vdi
+
+# Creating an IDE Storage device for cdrom
+VBoxManage storagectl "${USER}" --name "IDE Controller" --add ide
+
+# Attaching loud iso to cdrom
+VBoxManage storageattach "${USER}" --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium /home/${USER}/loud-desktop.iso
+
+# Starting Virtual Machine
+virtualbox --startvm ${USER} &
+
+else 
+# Starting Virtual Machine
+    virtualbox --startvm ${USER} &
+fi
