@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+
+gnome-terminal -x htop
+
+echo "Working Like a boss. Please fill in with reall stuffs"

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding-=UTF-8
+Name=MSHS Server
+Comment=Start connection to MSHS Server
+Exec=/usr/bin/mshs-server-connect
+Icon=rdesktop
+Terminal=false
+MultipleArgs=false
+Type=Application
+Categories=Application;Utility;
+GenericName[en_US]=
