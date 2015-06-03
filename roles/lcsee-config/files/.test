@@ -1,0 +1,30 @@
+#! /bin/bash
+
+## removing default desktop files
+if [ -f /home/${USER}/Desktop/README.nohome ]; then
+    rm /home/${USER}/Desktop/README.nohome
+fi
+
+if [ -f //home/${USER}/Desktop/examples.desktop ]; then
+    rm /home/${USER}/Desktop/examples.desktop
+fi
+
+## set up the background
+result=`pgrep X`
+if [ $? -eq 0 ]; then
+    gsettings set org.gnome.desktop.background picture-uri file:///cloudhome/${USER}/Pictures/intel.jpg
+    ##dconf write /org/compiz/profiles/unity/plugins/unityshell/icon-size 40
+fi
+
+## Copy Bashrc over
+rm -rf ~/.bashrc 
+ln -s /cloudhome/${USER}/bashrc/.bashrc ~/
+source ~/.bashrc
+
+# Copy windowthrow into palce
+sudo cp /cloudhome/cumorris/bashscripts/windowthrow /usr/bin/windowthrow
+
+# link cloudhome and home folder cloud dir
+ln -s /cloudhome/cumorris /home/cumorris/cloud
+
+# 
