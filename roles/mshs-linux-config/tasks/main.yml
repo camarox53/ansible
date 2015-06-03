@@ -15,7 +15,7 @@
 
 - name: Installing Basic Packages
   apt: pkg={{item}} state=installed
-  with items: 
+  with_items: 
   - emacs
   - ssh
   - chromium-browser
